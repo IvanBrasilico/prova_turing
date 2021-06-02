@@ -3,6 +3,7 @@ from unittest import TestCase
 from q1a import Economizador
 from q1b import corrige_virus
 from q2a import Estacionamento
+from q2b import EstacionamentoQB
 
 
 class Test1(TestCase):
@@ -26,6 +27,12 @@ class Test1(TestCase):
                          'possivel': True}
         self.teste2a2 = {'K': 3, 'N': 8, 'entradas': [1, 2, -2, 3, 5, -3, -1, -5],
                          'possivel': False}
+        # Dados teste q2b
+        self.teste2b1 = {'K': 4, 'N': 4, 'entradas': [1, 4, 6, 2], 'momento': 7,
+                         'saida': [0, 3, 0, 2]}
+        self.teste2b2 = {'K': 5, 'N': 7, 'entradas': [3, 6, 12, 9, 4, 15, 16], 'momento': 7,
+                         'saida': [0, 2, 0, 5, 1]}
+
 
     def test_q1a_cortaletras(self):
         economizador = Economizador()
@@ -47,3 +54,10 @@ class Test1(TestCase):
             estacionamento = Estacionamento(teste['K'], teste['N'])
             estacionamento.entradas = teste['entradas']
             assert estacionamento.possivel == teste['possivel']
+
+    def test_q2b(self):
+        for teste in [self.teste2b1, self.teste2b2]:
+            estacionamento = EstacionamentoQB(teste['K'], teste['N'])
+            for momento in teste['entradas']:
+                estacionamento.entrada_momento(momento)
+            assert estacionamento.status(teste['momento']) == teste['saida']
